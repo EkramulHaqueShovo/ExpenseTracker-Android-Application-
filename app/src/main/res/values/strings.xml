@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ExpenseTracker</string>
     <string name="name">Name</string>
+    <string name="submit">Submit</string>
+    <string name="reset_expenses">Reset Expenses</string>
+    <string name="exit">Exit</string>
 </resources>
