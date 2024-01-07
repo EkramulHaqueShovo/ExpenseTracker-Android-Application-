@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
             totalExpenses += expenseAmount;
 
             clearInputFields();
+        } else {
+            // If no expense amount is entered, clear only the balance field
+            editTextTotalBalance.getText().clear();
         }
 
         // Calculate total balance by summing up all stored balances
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         // Show updated data
         showStoredData();
     }
+
 
     private void calculateTotalBalance() {
         try {
