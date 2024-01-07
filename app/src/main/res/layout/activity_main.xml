@@ -28,16 +28,16 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorAccent"
         android:ems="10"
-        android:hint="Enter Total Balance"
+        android:hint="Enter  Balance"
         android:inputType="numberDecimal"
-        android:textColorHint="#B3FFFFFF"
         android:textColor="@color/white"
+        android:textColorHint="#B3FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerTextView"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.511" />
 
     <EditText
         android:id="@+id/editTextText"
@@ -90,18 +90,18 @@
 
     <TextView
         android:id="@+id/resultLabel"
-        android:layout_width="378dp"
-        android:layout_height="206dp"
+        android:layout_width="407dp"
+        android:layout_height="271dp"
         android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        app:layout_constraintVertical_bias="0.482" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85" />
 
     <TextView
         android:id="@+id/developerInfoTextView"

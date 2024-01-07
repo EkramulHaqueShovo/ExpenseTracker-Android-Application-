@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <!-- Existing styles -->
+
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <!-- Customize the attributes as needed -->
+        <item name="android:textColorHint">@color/textInputColor</item>
+        <item name="android:textColor">@color/textInputColor</item>
+        <!-- Add more attributes as needed -->
     </style>
 
 </resources>
