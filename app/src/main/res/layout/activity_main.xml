@@ -24,38 +24,38 @@
 
     <EditText
         android:id="@+id/editTextTotalBalance"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="363dp"
+        android:layout_height="66dp"
         android:backgroundTint="@color/colorAccent"
         android:ems="10"
         android:hint="Enter  Balance"
         android:inputType="numberDecimal"
         android:textColor="@color/white"
         android:textColorHint="#B3FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.511" />
+        app:layout_constraintVertical_bias="0.233" />
 
     <EditText
         android:id="@+id/editTextText"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_width="364dp"
+        android:layout_height="57dp"
         android:backgroundTint="@color/colorAccent"
         android:ems="10"
         android:hint="Enter Expenses"
         android:inputType="numberDecimal"
         android:minHeight="48dp"
-        android:textColorHint="#B3FFFFFF"
         android:textColor="@color/white"
+        android:textColorHint="#B3FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTotalBalance"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.329" />
 
     <Button
         android:id="@+id/cleanButton"
@@ -67,10 +67,10 @@
         app:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
+        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toEndOf="@+id/button"
         app:layout_constraintTop_toBottomOf="@+id/editTextText"
-        app:layout_constraintVertical_bias="0.067" />
+        app:layout_constraintVertical_bias="0.111" />
 
     <Button
         android:id="@+id/button"
@@ -83,10 +83,10 @@
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.192"
+        app:layout_constraintHorizontal_bias="0.208"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText"
-        app:layout_constraintVertical_bias="0.067" />
+        app:layout_constraintVertical_bias="0.111" />
 
     <TextView
         android:id="@+id/resultLabel"
