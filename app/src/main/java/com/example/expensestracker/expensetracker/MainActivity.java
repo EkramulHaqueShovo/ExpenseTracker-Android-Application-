@@ -1,10 +1,17 @@
 package com.example.expensestracker.expensetracker;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,13 +23,19 @@ public class MainActivity extends AppCompatActivity {
     private TextView resultLabel;
     private TextView developerInfoTextView;
 
-    private double totalExpenses = 0.0;
+    private DBHelper dbHelper;
+    private SQLiteDatabase database;
+
     private double totalBalance = 0.0;
+    private double totalExpenses = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbHelper = new DBHelper(this);
+        database = dbHelper.getWritableDatabase();
 
         editTextTotalBalance = findViewById(R.id.editTextTotalBalance);
         editTextText = findViewById(R.id.editTextText);
@@ -46,31 +59,66 @@ public class MainActivity extends AppCompatActivity {
         });
 
         developerInfoTextView.setText("Developer: Ekramul Haque Shovo\nGitHub: https://github.com/EkramulHaqueShovo");
+
+        // Load initial data from the database
+        loadInitialData();
+
+        // Show stored data
+        showStoredData();
     }
 
     private void handleSubmission() {
         String totalBalanceText = editTextTotalBalance.getText().toString();
         String expenseText = editTextText.getText().toString();
 
-        StringBuilder resultMessage = new StringBuilder();
+        ContentValues values = new ContentValues();
 
         if (!totalBalanceText.isEmpty()) {
-            totalBalance = Double.parseDouble(totalBalanceText);
-            resultMessage.append(String.format("Total Balance(Taka): %.2f\n", totalBalance));
+            double additionalBalance = Double.parseDouble(totalBalanceText);
+            values.put("amount", additionalBalance);
+            database.insert("balance", null, values);
         }
 
         if (!expenseText.isEmpty()) {
             double expenseAmount = Double.parseDouble(expenseText);
+            values.clear();
+            values.put("amount", expenseAmount);
+            database.insert("expenses", null, values);
+
             totalExpenses += expenseAmount;
-
-            double remainingBalance = totalBalance - totalExpenses;
-
-            resultMessage.append(String.format("Expense: %.2f\n", expenseAmount));
-            resultMessage.append(String.format("Total Expenses(Taka): %.2f\n", totalExpenses));
-            resultMessage.append(String.format("Remaining Balance(Taka): %.2f\n", remainingBalance));
 
             clearInputFields();
         }
+
+        // Calculate total balance by summing up all stored balances
+        calculateTotalBalance();
+
+        // Show updated data
+        showStoredData();
+    }
+
+    private void calculateTotalBalance() {
+        try {
+            // Query the database for the sum of all stored balances
+            Cursor balanceCursor = database.rawQuery("SELECT COALESCE(SUM(amount), 0) FROM balance", null);
+
+            if (balanceCursor.moveToFirst()) {
+                totalBalance = balanceCursor.getDouble(0);
+            }
+
+            balanceCursor.close();
+        } catch (Exception e) {
+            Log.e("calculateTotalBalance", "Error calculating total balance", e);
+        }
+    }
+
+    private void showStoredData() {
+        double remainingBalance = totalBalance - totalExpenses;
+
+        StringBuilder resultMessage = new StringBuilder();
+        resultMessage.append(String.format("Total Balance(Taka): %.2f\n", totalBalance));
+        resultMessage.append(String.format("Total Expenses(Taka): %.2f\n", totalExpenses));
+        resultMessage.append(String.format("Remaining Balance(Taka): %.2f\n", remainingBalance));
 
         resultLabel.setText(resultMessage.toString());
     }
@@ -81,9 +129,67 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clearAllFields() {
-        totalExpenses = 0.0;
         totalBalance = 0.0;
+        totalExpenses = 0.0;
         resultLabel.setText("");
         clearInputFields();
+
+        // Clear all records from the "expenses" and "balance" tables
+        database.delete("expenses", null, null);
+        database.delete("balance", null, null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
+    }
+
+    private static class DBHelper extends SQLiteOpenHelper {
+
+        private static final String DATABASE_NAME = "expenses.db";
+        private static final int DATABASE_VERSION = 1;
+
+        public DBHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            try {
+                db.execSQL("CREATE TABLE expenses (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL);");
+                db.execSQL("CREATE TABLE balance (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL);");
+            } catch (Exception e) {
+                Log.e("DBHelper", "Error creating tables", e);
+            }
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            // Upgrade the database if needed
+        }
+    }
+
+    private void loadInitialData() {
+        try {
+            // Query the database for initial values
+            Cursor expenseCursor = database.rawQuery("SELECT COALESCE(SUM(amount), 0) FROM expenses", null);
+
+            if (expenseCursor.moveToFirst()) {
+                totalExpenses = expenseCursor.getDouble(0);
+            }
+
+            // Load total balance if it exists
+            Cursor balanceCursor = database.rawQuery("SELECT COALESCE(SUM(amount), 0) FROM balance", null);
+
+            if (balanceCursor.moveToFirst()) {
+                totalBalance = balanceCursor.getDouble(0);
+            }
+
+            expenseCursor.close();
+            balanceCursor.close();
+        } catch (Exception e) {
+            Log.e("loadInitialData", "Error loading initial data", e);
+        }
     }
 }
