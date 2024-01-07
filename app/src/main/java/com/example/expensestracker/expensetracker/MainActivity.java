@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
+import android.text.Html;
+
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -120,12 +123,19 @@ public class MainActivity extends AppCompatActivity {
         double remainingBalance = totalBalance - totalExpenses;
 
         StringBuilder resultMessage = new StringBuilder();
-        resultMessage.append(String.format("Total Balance(Taka): %.2f\n", totalBalance));
-        resultMessage.append(String.format("Total Expenses(Taka): %.2f\n", totalExpenses));
-        resultMessage.append(String.format("Remaining Balance(Taka): %.2f\n", remainingBalance));
+        resultMessage.append("<br/><b>Data Summary:</b><br/><br/>");
+        resultMessage.append("<b>Total Balance(Taka):</b> ").append(String.format("%.2f<br/>", totalBalance));
+        resultMessage.append("<b>Total Expenses (Taka):</b> ").append(String.format("%.2f<br/>", totalExpenses));
+        resultMessage.append("<b>Remaining Balance(Taka):</b> ").append(String.format("%.2f<br/>", remainingBalance));
 
-        resultLabel.setText(resultMessage.toString());
+
+
+
+        resultLabel.setText(Html.fromHtml(resultMessage.toString(), Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
     }
+
+
+
 
     private void clearInputFields() {
         editTextTotalBalance.getText().clear();
