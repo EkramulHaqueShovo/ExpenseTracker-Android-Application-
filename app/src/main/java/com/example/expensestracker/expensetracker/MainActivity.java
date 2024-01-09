@@ -123,16 +123,25 @@ public class MainActivity extends AppCompatActivity {
         double remainingBalance = totalBalance - totalExpenses;
 
         StringBuilder resultMessage = new StringBuilder();
-        resultMessage.append("<br/><b>Data Summary:</b><br/><br/>");
-        resultMessage.append("<b>Total Balance(Taka):</b> ").append(String.format("%.2f<br/>", totalBalance));
-        resultMessage.append("<b>Total Expenses (Taka):</b> ").append(String.format("%.2f<br/>", totalExpenses));
-        resultMessage.append("<b>Remaining Balance(Taka):</b> ").append(String.format("%.2f<br/>", remainingBalance));
-
-
-
+        resultMessage.append("<h2>Data Summary:</h2>");
+        resultMessage.append("<ul>");
+        resultMessage.append("<li><b>Total Balance (Taka):</b> ").append(String.format("%.2f</li>", totalBalance));
+        resultMessage.append("<li><b>Total Expenses (Taka):</b> ").append(String.format("%.2f</li>", totalExpenses));
+        resultMessage.append("<li><b>Remaining Balance (Taka):</b> ").append(String.format("%.2f</li>", remainingBalance));
+        resultMessage.append("</ul>");
+        // Show the last 3 expenses
+        resultMessage.append("<h2>Last 3 Expenses:</h2>");
+        Cursor lastExpensesCursor = database.rawQuery("SELECT * FROM expenses ORDER BY _id DESC LIMIT 3", null);
+        while (lastExpensesCursor.moveToNext()) {
+            double expenseAmount = lastExpensesCursor.getDouble(lastExpensesCursor.getColumnIndex("amount"));
+            resultMessage.append(String.format("Expense: %.2f<br/>", expenseAmount));
+        }
+        lastExpensesCursor.close();
 
         resultLabel.setText(Html.fromHtml(resultMessage.toString(), Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
     }
+
+
 
 
 
